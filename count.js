@@ -1,13 +1,3 @@
-/** -----\
- * Usage |
- ** -----/
- * To load multiple elements:
- * >> <script>
- * >>	var style = {style: 'margin-top: 2px; font-family: Arial', class: 'counter'}
- * >> 	count.elements(document.querySelectorAll('textarea'), style);
- * >> </script>
- */
-
 (function(){
 
 	/* The attributes should be like that: {class: 'form-control'}. */
@@ -25,11 +15,11 @@
 			attr==''||attr==null ? attr={} : attr=attr;
 			var counter = document.createElement('div');
 			setAttributes(counter, attr)
-			count.refreshCounter(counter, element)
+			count.compile(counter, element)
 			return counter;
 		},
 
-		refreshCounter: function(counter, element) {
+		compile: function(counter, element) {
 			var max = element.getAttribute('max')==0 ||
 								element.getAttribute('max')==null ?
 									count.config.max :
