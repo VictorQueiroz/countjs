@@ -1,20 +1,11 @@
 /** -----\
  * Usage |
  ** -----/
- * >> ====\ To load multiple elements /=======\
- * >> <script>								  |_______________________________________
- * >>	var style = {style: 'margin-top: 2px; font-family: Arial', class: 'counter'}  |
- * >> 	count.elements(document.getElementsByTagName('textarea'), style);			  |
- * >> </script> ______________________________________________________________________|
- * >> _________/
- *   /
- *   \
- * >>/====\ To load one specific element /====\
- * >> <script>								  |_______________________________________
- * >>	var style = {style: 'margin-top: 2px; font-family: Arial', class: 'counter'}  |
- * >> 	count.element(document.getElementsByTagName('textarea')[0], style);			  |
- * >> </script> ______________________________________________________________________|
- * >> _________/ 
+ * To load multiple elements:
+ * >> <script>
+ * >>	var style = {style: 'margin-top: 2px; font-family: Arial', class: 'counter'}
+ * >> 	count.elements(document.querySelectorAll('textarea'), style);
+ * >> </script>
  */
 
 (function(){
@@ -28,11 +19,9 @@
 			return element;
 	}
 
-	count =
-	{
+	count = {
 		config: {max: 150},
-		counter: function(element, attr)
-		{
+		counter: function(element, attr) {
 			attr==''||attr==null ? attr={} : attr=attr;
 			var counter = document.createElement('div');
 			setAttributes(counter, attr)
@@ -40,7 +29,7 @@
 			return counter;
 		},
 
-		refreshCounter: function(counter, element){
+		refreshCounter: function(counter, element) {
 			var max = element.getAttribute('max')==0 ||
 								element.getAttribute('max')==null ?
 									count.config.max :
@@ -48,30 +37,25 @@
 			counter.innerHTML = element.value.length + ' / ' + max;
 		},
 
-		element: function (element, attr)
-		{
-			if(element)
-			{
-				try
-				{
+		bind: function (element, attr) {
+			if(element) {
+				try {
 					/**
 					 * Preventing max attribute from some error or bug.
 					 *
 					 * This part of the script set the max tag parameter
 					 * to a number that the user had choosed.
 					 */
-					var max = element.getAttribute('max')
+					var max = element.getAttribute('max');
+					
 					if(max==null || max=='' || max==0)
-						element.setAttribute('max', count.config.max)
+						element.setAttribute('max', count.config.max);
+						
 					var counter = count.counter(element, attr);
-					element.parentNode.insertBefore(counter, element.nextSibling)
+					element.parentNode.insertBefore(counter, element.nextSibling);
 					/* The function when the textarea suffer a change. */
-					element.onkeypress=function()
-					{
-						if(
-							this.value.length <= this.getAttribute('max') &&
-							this.value.length <= count.config.max
-						)
+					element.onkeypress=function() {
+						if(this.value.length <= this.getAttribute('max') && this.value.length <= count.config.max)
 							count.refreshCounter(this.nextSibling, this)
 						else
 							this.value = this.value.substring(0, this.getAttribute('max'));
@@ -81,11 +65,10 @@
 			}
 		},
 
-		elements: function(elements, attr)
-		{
-			if(elements instanceof Object || elements instanceof Array)
+		element: function(elements, attrs) {
+			if(elements instanceof Array)
 				for(var i in elements)
-					count.element(elements[i], attr)
+					count.bind(elements[i], attr);
 		}
 	}
 
